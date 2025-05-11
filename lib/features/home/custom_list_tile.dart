@@ -22,7 +22,7 @@ class CustomCountryTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 56,
-      margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
+      margin: const EdgeInsets.symmetric(vertical: 6),
       padding: const EdgeInsets.symmetric(horizontal: 12),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -30,14 +30,11 @@ class CustomCountryTile extends StatelessWidget {
       ),
       child: Row(
         children: [
-          // Flag (SVG olarak)
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: SvgPicture.asset(flagAsset, fit: BoxFit.cover),
           ),
           const SizedBox(width: 12),
-
-          // Country Name & Location Count
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

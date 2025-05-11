@@ -16,4 +16,5 @@ class AppColors {
   static const Color textMedium = Color(0xFF666666);
   static const Color white = Color(0xFFFFFFFF);
   static const Color buttonColor = Color(0xFF00091F);
+  static const Color primaryBlack = Color(0xFF00091F);
 }
