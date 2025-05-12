@@ -20,67 +20,70 @@ class CustomCountryTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 56,
-      margin: const EdgeInsets.symmetric(vertical: 6),
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Row(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: SvgPicture.asset(flagAsset, fit: BoxFit.cover),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  countryName,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 32.0),
+      child: Container(
+        height: 56,
+        margin: const EdgeInsets.symmetric(vertical: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Row(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: SvgPicture.asset(flagAsset, fit: BoxFit.cover),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    countryName,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
-                ),
-                Text(
-                  '$locationCount bağlantı',
-                  style: const TextStyle(fontSize: 12, color: Colors.black54),
-                ),
-              ],
-            ),
-          ),
-
-          IconButton(
-            icon: SvgPicture.asset(
-              'assets/icons/connection.svg',
-              width: 64,
-              height: 32,
-              colorFilter: const ColorFilter.mode(
-                AppColors.buttonColor,
-                BlendMode.srcIn,
+                  Text(
+                    '$locationCount bağlantı',
+                    style: const TextStyle(fontSize: 12, color: Colors.black54),
+                  ),
+                ],
               ),
             ),
-            onPressed: onConnectTap,
-          ),
 
-          IconButton(
-            icon: SvgPicture.asset(
-              'assets/icons/arrow.svg',
-              width: 64,
-              height: 32,
-              colorFilter: const ColorFilter.mode(
-                AppColors.buttonColor,
-                BlendMode.srcIn,
+            IconButton(
+              icon: SvgPicture.asset(
+                'assets/icons/connection.svg',
+                width: 64,
+                height: 32,
+                colorFilter: const ColorFilter.mode(
+                  AppColors.buttonColor,
+                  BlendMode.srcIn,
+                ),
               ),
+              onPressed: onConnectTap,
             ),
-            onPressed: onDetailsTap,
-          ),
-        ],
+
+            IconButton(
+              icon: SvgPicture.asset(
+                'assets/icons/arrow.svg',
+                width: 64,
+                height: 32,
+                colorFilter: const ColorFilter.mode(
+                  AppColors.buttonColor,
+                  BlendMode.srcIn,
+                ),
+              ),
+              onPressed: onDetailsTap,
+            ),
+          ],
+        ),
       ),
     );
   }
