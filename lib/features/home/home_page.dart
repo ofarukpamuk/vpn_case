@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:vpn_case/features/home/connect_time.dart';
-import 'package:vpn_case/features/home/custom_list_tile.dart';
+import 'package:vpn_case/features/home/locationFields/data/mock_location_repository.dart';
+import 'package:vpn_case/features/home/locationFields/presentations/bloc/location_bloc.dart';
+import 'package:vpn_case/features/home/locationFields/presentations/bloc/location_event.dart';
 import '../../core/enums/bottom_nav_item.dart';
 import '../../core/init/theme/app_colors.dart';
 import '../../core/widgets/custom_bottom_nav_bar.dart';
 import '../search/country_search_screen.dart';
+import 'locationFields/presentations/widget/location_widget.dart';
 
 class VpnHomeScreen extends StatefulWidget {
   const VpnHomeScreen({super.key});
@@ -19,18 +23,22 @@ class _VpnHomeScreenState extends State<VpnHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
-      body: _buildBody(_currentItem),
-      bottomNavigationBar: CustomBottomNavBar(
-        selectedItem: _currentItem,
-        onItemSelected: (item) {
-          setState(() {
-            _currentItem = item;
-          });
-        },
+    return BlocProvider(
+      create:
+          (_) => LocationBloc(MockLocationRepository())..add(LoadLocations()),
+      child: Scaffold(
+        backgroundColor: AppColors.backgroundColor,
+        body: _buildBody(_currentItem),
+        bottomNavigationBar: CustomBottomNavBar(
+          selectedItem: _currentItem,
+          onItemSelected: (item) {
+            setState(() {
+              _currentItem = item;
+            });
+          },
+        ),
       ),
-    );
+    ); ////
   }
 
   Widget _buildBody(BottomNavItem item) {
@@ -41,7 +49,7 @@ class _VpnHomeScreenState extends State<VpnHomeScreen> {
             _CustomHeader(),
             const SizedBox(height: 20),
             const ConnectingTimeWidget(),
-            const Location(
+            const _Location(
               flagAsset: 'assets/flags/netherlands.svg',
               countryName: 'Netherlands',
               cityName: 'Amsterdam',
@@ -50,20 +58,21 @@ class _VpnHomeScreenState extends State<VpnHomeScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: const [
-                Speed(
+                _Speed(
                   iconAsset: 'assets/icons/download.svg',
                   label: 'Download',
                   value: '435 MB',
                 ),
                 SizedBox(width: 12),
-                Speed(
+                _Speed(
                   iconAsset: 'assets/icons/upload.svg',
                   label: 'Upload',
                   value: '122 MB',
                 ),
               ],
             ),
-            const _LocationListWidget(),
+            // const _LocationListWidget(),
+            LocationWidget(),
           ],
         );
 
@@ -185,13 +194,13 @@ class _CustomHeader extends StatelessWidget {
   }
 }
 
-class Location extends StatelessWidget {
+class _Location extends StatelessWidget {
   final String flagAsset;
   final String countryName;
   final String cityName;
   final String percentageText; // örn: "%22"
 
-  const Location({
+  const _Location({
     Key? key,
     required this.flagAsset,
     required this.countryName,
@@ -269,12 +278,12 @@ class Location extends StatelessWidget {
   }
 }
 
-class Speed extends StatelessWidget {
+class _Speed extends StatelessWidget {
   final String iconAsset;
   final String label;
   final String value;
 
-  const Speed({
+  const _Speed({
     Key? key,
     required this.iconAsset,
     required this.label,
@@ -327,64 +336,64 @@ class Speed extends StatelessWidget {
   }
 }
 
-class _LocationListWidget extends StatelessWidget {
-  const _LocationListWidget();
+// class _LocationListWidget extends StatelessWidget {
+//   const _LocationListWidget();
 
-  @override
-  Widget build(BuildContext context) {
-    final List<Map<String, dynamic>> countries = [
-      {'name': 'Germany', 'flag': 'assets/flags/germany.svg', 'locations': 8},
-      {'name': 'Italy', 'flag': 'assets/flags/italy.svg', 'locations': 5},
-      {
-        'name': 'Netherlands',
-        'flag': 'assets/flags/netherlands.svg',
-        'locations': 12,
-      },
-    ];
+//   @override
+//   Widget build(BuildContext context) {
+//     final List<Map<String, dynamic>> countries = [
+//       {'name': 'Germany', 'flag': 'assets/flags/germany.svg', 'locations': 8},
+//       {'name': 'Italy', 'flag': 'assets/flags/italy.svg', 'locations': 5},
+//       {
+//         'name': 'Netherlands',
+//         'flag': 'assets/flags/netherlands.svg',
+//         'locations': 12,
+//       },
+//     ];
 
-    return SizedBox(
-      height: 260,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 32.0),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Free locations (2)',
-                  style: TextStyle(
-                    color: Colors.black54,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                Icon(Icons.info, size: 16, color: Colors.black45),
-              ],
-            ),
+//     return SizedBox(
+//       height: 260,
+//       child: Padding(
+//         padding: const EdgeInsets.symmetric(horizontal: 32.0),
+//         child: Column(
+//           children: [
+//             Row(
+//               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//               children: [
+//                 const Text(
+//                   'Free locations (2)',
+//                   style: TextStyle(
+//                     color: Colors.black54,
+//                     fontSize: 12,
+//                     fontWeight: FontWeight.w500,
+//                   ),
+//                 ),
+//                 Icon(Icons.info, size: 16, color: Colors.black45),
+//               ],
+//             ),
 
-            Expanded(
-              child: ListView.builder(
-                itemCount: countries.length,
-                itemBuilder: (context, index) {
-                  final country = countries[index];
-                  return CustomCountryTile(
-                    flagAsset: country['flag']!,
-                    countryName: country['name']!,
-                    locationCount: country['locations'] as int,
-                    onConnectTap: () {
-                      print('${country['name']} ülkesine bağlanılıyor...');
-                    },
-                    onDetailsTap: () {
-                      print('${country['name']} detayları açılıyor...');
-                    },
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+//             Expanded(
+//               child: ListView.builder(
+//                 itemCount: countries.length,
+//                 itemBuilder: (context, index) {
+//                   final country = countries[index];
+//                   return CustomCountryTile(
+//                     flagAsset: country['flag']!,
+//                     countryName: country['name']!,
+//                     locationCount: country['locations'] as int,
+//                     onConnectTap: () {
+//                       print('${country['name']} ülkesine bağlanılıyor...');
+//                     },
+//                     onDetailsTap: () {
+//                       print('${country['name']} detayları açılıyor...');
+//                     },
+//                   );
+//                 },
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
