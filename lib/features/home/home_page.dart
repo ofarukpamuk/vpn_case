@@ -5,6 +5,7 @@ import 'package:vpn_case/features/home/custom_list_tile.dart';
 import '../../core/enums/bottom_nav_item.dart';
 import '../../core/init/theme/app_colors.dart';
 import '../../core/widgets/custom_bottom_nav_bar.dart';
+import '../search/country_search_screen.dart';
 
 class VpnHomeScreen extends StatefulWidget {
   const VpnHomeScreen({super.key});
@@ -90,9 +91,7 @@ class _CustomHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return
-    // Mavi arka plan + beyaz dalga SVG
-    Container(
+    return Container(
       width: double.infinity,
       height: 190,
       decoration: BoxDecoration(
@@ -102,13 +101,12 @@ class _CustomHeader extends StatelessWidget {
           bottomRight: Radius.circular(24),
         ),
       ),
-      child: // İçerik
-          Padding(
+      child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 32),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Üst ikonlar ve başlık
+            // Başlık kısmı
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Row(
@@ -136,38 +134,47 @@ class _CustomHeader extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 30),
-
-            // Arama kutusu
-            Container(
-              height: 56,
-              padding: EdgeInsets.symmetric(horizontal: 8.0),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: 'Search for country or city',
-                  border: InputBorder.none,
-                  hintStyle: TextStyle(color: Colors.black54),
-                  contentPadding: const EdgeInsets.symmetric(
-                    vertical: 12.0,
-                    horizontal: 16.0,
+            GestureDetector(
+              onTap: () async {
+                final selectedCountry = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const CountrySearchScreen(),
                   ),
-                  suffixIcon: Padding(
-                    padding: const EdgeInsets.only(right: 12.0),
-                    child: SvgPicture.asset(
-                      'assets/icons/search.svg',
-                      colorFilter: const ColorFilter.mode(
-                        Colors.black,
-                        BlendMode.srcIn,
+                );
+
+                if (selectedCountry != null) {
+                  print('Seçilen ülke: ${selectedCountry.name}');
+                }
+              },
+              child: Container(
+                height: 56,
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                alignment: Alignment.centerLeft,
+                child: Row(
+                  children: [
+                    const SizedBox(width: 16),
+                    const Expanded(
+                      child: Text(
+                        'Search for country or city',
+                        style: TextStyle(color: Colors.black54, fontSize: 14),
                       ),
                     ),
-                  ),
-                  suffixIconConstraints: const BoxConstraints(
-                    minWidth: 36,
-                    minHeight: 36,
-                  ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 12.0),
+                      child: SvgPicture.asset(
+                        'assets/icons/search.svg',
+                        colorFilter: const ColorFilter.mode(
+                          Colors.black,
+                          BlendMode.srcIn,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),

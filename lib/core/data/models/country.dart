@@ -1,6 +1,6 @@
 class Country {
   final String name;
-  final String flag; // assets/flags/italy.png
+  final String flag;
   final String city;
   final int locationCount;
   final int strength;

@@ -4,14 +4,14 @@ import 'package:vpn_case/core/data/models/country.dart';
 final mockCountries = [
   Country(
     name: 'Italy',
-    flag: 'assets/flags/italy.png',
+    flag: 'assets/flags/italy.svg',
     city: '',
     locationCount: 4,
     strength: 70,
   ),
   Country(
     name: 'Netherlands',
-    flag: 'assets/flags/netherlands.png',
+    flag: 'assets/flags/netherlands.svg',
     city: 'Amsterdam',
     locationCount: 12,
     strength: 85,
@@ -19,7 +19,7 @@ final mockCountries = [
   ),
   Country(
     name: 'Germany',
-    flag: 'assets/flags/germany.png',
+    flag: 'assets/flags/germany.svg',
     city: '',
     locationCount: 10,
     strength: 90,
