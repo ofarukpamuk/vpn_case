@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import '../../../custom_list_tile.dart' show CustomCountryTile;
 import '../bloc/location_bloc.dart';
 import '../bloc/location_state.dart';
