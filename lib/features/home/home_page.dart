@@ -1,50 +1,87 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:vpn_case/features/home/connect_time.dart';
 import 'package:vpn_case/features/home/custom_list_tile.dart';
-
+import '../../core/enums/bottom_nav_item.dart';
 import '../../core/init/theme/app_colors.dart';
+import '../../core/widgets/custom_bottom_nav_bar.dart';
 
-class VpnHomeScreen extends StatelessWidget {
+class VpnHomeScreen extends StatefulWidget {
   const VpnHomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final TextEditingController searchController = TextEditingController();
+  State<VpnHomeScreen> createState() => _VpnHomeScreenState();
+}
 
+class _VpnHomeScreenState extends State<VpnHomeScreen> {
+  BottomNavItem _currentItem = BottomNavItem.countries;
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
-      body: Column(
-        children: [
-          _CustomHeader(),
-          SizedBox(height: 20),
-          ConnectingTimeWidget(),
-          Location(
-            flagAsset: 'assets/flags/netherlands.svg',
-            countryName: 'Netherlands',
-            cityName: 'Amsterdam',
-            percentageText: '%22',
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Speed(
-                iconAsset: 'assets/icons/download.svg',
-                label: 'Download',
-                value: '435 MB',
-              ),
-              SizedBox(width: 12),
-              Speed(
-                iconAsset: 'assets/icons/upload.svg',
-                label: 'Upload',
-                value: '122 MB',
-              ),
-            ],
-          ),
-          _LocationListWidget(),
-        ],
+      body: _buildBody(_currentItem),
+      bottomNavigationBar: CustomBottomNavBar(
+        selectedItem: _currentItem,
+        onItemSelected: (item) {
+          setState(() {
+            _currentItem = item;
+          });
+        },
       ),
     );
+  }
+
+  Widget _buildBody(BottomNavItem item) {
+    switch (item) {
+      case BottomNavItem.countries:
+        return Column(
+          children: [
+            _CustomHeader(),
+            const SizedBox(height: 20),
+            const ConnectingTimeWidget(),
+            const Location(
+              flagAsset: 'assets/flags/netherlands.svg',
+              countryName: 'Netherlands',
+              cityName: 'Amsterdam',
+              percentageText: '%22',
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Speed(
+                  iconAsset: 'assets/icons/download.svg',
+                  label: 'Download',
+                  value: '435 MB',
+                ),
+                SizedBox(width: 12),
+                Speed(
+                  iconAsset: 'assets/icons/upload.svg',
+                  label: 'Upload',
+                  value: '122 MB',
+                ),
+              ],
+            ),
+            const _LocationListWidget(),
+          ],
+        );
+
+      case BottomNavItem.disconnect:
+        return const Center(
+          child: Text(
+            'Disconnected',
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+        );
+
+      case BottomNavItem.settings:
+        return const Center(
+          child: Text(
+            'Settings Page',
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+        );
+    }
   }
 }
 

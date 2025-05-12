@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:vpn_case/core/constants/navigation/navigations_constanst.dart';
+import 'package:vpn_case/features/disconnect/disconnect_screen.dart';
+import 'package:vpn_case/features/home/home_page.dart';
+import 'package:vpn_case/features/setting/settings_screen.dart'
+    show SettingsScreen;
 import 'package:vpn_case/main.dart';
 
 /**
@@ -15,14 +19,17 @@ class NavigationRoute {
       case NavigationConstants.DEFAULT:
         return normalNavigate(const MyApp(), NavigationConstants.DEFAULT);
 
-      case NavigationConstants.PROFILE:
-        return normalNavigate(MyApp(), NavigationConstants.LOGIN);
+      case NavigationConstants.HOME:
+        return normalNavigate(VpnHomeScreen(), NavigationConstants.HOME);
 
-      case NavigationConstants.LOGIN:
-        return normalNavigate(const MyApp(), NavigationConstants.SIGNIN);
+      case NavigationConstants.DISCONNECT:
+        return normalNavigate(
+          const DisconnectScreen(),
+          NavigationConstants.DISCONNECT,
+        );
 
-      case NavigationConstants.SIGNIN:
-        return normalNavigate(const MyApp(), NavigationConstants.HOME);
+      case NavigationConstants.SETTING:
+        return normalNavigate(const SettingsScreen(), NavigationConstants.HOME);
 
       default:
         return MaterialPageRoute(builder: (context) => const MyApp());
